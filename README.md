@@ -4,7 +4,7 @@ This Terraform module creates and configures an AVI (NSX Advanced Load-Balancer)
 ## Module Functions
 The module is meant to be modular and can create all or none of the prerequiste resources needed for the AVI AWS Deployment including:
 * VPC and Subnets for the Controller and SEs (optional with create_networking variable)
-* IAM Roles, Service Account, and Role Bindings (optional with create_iam variable)
+* IAM Roles, Policy, and Instance Profile (optional with create_iam variable)
 * Security Groups for AVI Controller and SE communication
 * AWS EC2 Instance using an official AVI AMI
 * High Availability AVI Controller Deployment (optional with controller_ha variable)
@@ -17,24 +17,34 @@ During the creation of the Controller instance the following initialization step
 ## Usage
 This is an example of a controller deployment that leverages an existing VPC (with a cidr_block of 10.154.0.0/16) and 3 subnets. The public key is already created in EC2 and the private key found in the "/home/<user>/.ssh/id_rsa" will be used to copy and run the Ansible playbook to configure the Controller.
 ```hcl
-module "avi_controller" {
-  version = "1.0.0"
+terraform {
+  backend "local" {
+  }
+}
+module "avi_controller_aws" {
+  version = "1.0.x"
 
   region = "us-west-1"
+  aws_access_key = "<access-key>"
+  aws_secret_key = "<secret-key>"
   create_networking = "false"
   create_iam = "false"
   controller_version = "20.1.3"
   custom_vpc_id = "vpc-<id>"
   custom_subnet_ids = ["subnet-<id>","subnet-<id>","subnet-<id>"]
   avi_cidr_block = "10.154.0.0/16"
-  controller_image_gs_path = "<bucket>/gcp_controller-20.1.3-9085.tar.gz"
   controller_password = "<newpassword>"
   key_pair_name = "<key>"
   private_key_path = "/home/<user>/.ssh/id_rsa"
   name_prefix = "<name>"
-  custom_tags = { "Department": "IT", "Function": "Loadbalancing"}
+  custom_tags = { "Role" : "Avi-Controller", "Owner" : "admin", "Department" : "IT", "shutdown_policy" : "noshut" }
 }
-
+output "controller_ip" { 
+  value = module.avi_controller_aws.public_address
+}
+output "ansible_variables" {
+  value = module.avi_controller_aws.ansible_variables
+}
 ```
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
@@ -79,6 +89,6 @@ module "avi_controller" {
 | Name | Description |
 |------|-------------|
 | ansible\_variables | The Ansible variables used to configure the AVI Controller |
-| instance\_public\_ip\_addr | Public IP Addresses for the AVI Controller(s) |
+| public\_address | Public IP Addresses for the AVI Controller(s) |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
