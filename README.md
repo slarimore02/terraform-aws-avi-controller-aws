@@ -21,7 +21,7 @@ terraform {
   backend "local" {
   }
 }
-module "avi_controller_aws" {
+module "avi-controller-aws" {
   source  = "slarimore02/avi-controller-aws/aws"
   version = "1.0.x"
 
