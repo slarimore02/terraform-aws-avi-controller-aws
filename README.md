@@ -1,4 +1,4 @@
-# AVI Controller Deployment on GCP Terraform module
+# AVI Controller Deployment on AWS Terraform module
 This Terraform module creates and configures an AVI (NSX Advanced Load-Balancer) Controller on AWS
 
 ## Module Functions
