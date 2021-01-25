@@ -22,6 +22,7 @@ terraform {
   }
 }
 module "avi_controller_aws" {
+  source  = "slarimore02/avi-controller-aws/aws"
   version = "1.0.x"
 
   region = "us-west-1"
