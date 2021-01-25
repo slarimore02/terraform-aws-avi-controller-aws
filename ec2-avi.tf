@@ -50,7 +50,6 @@ locals {
     }
   }
 }
-
 resource "aws_instance" "avi_controller" {
   count = var.controller_ha ? 3 : 1
   ami   = local.avi_ami[var.controller_version][var.region]
