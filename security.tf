@@ -91,11 +91,25 @@ resource "aws_security_group" "avi_se_mgmt_sg" {
     cidr_blocks = [var.avi_cidr_block]
   }
   egress {
-    description = "Allow any Outbound"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow SSH to Controller"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [var.avi_cidr_block]
+  }
+  egress {
+    description = "Allow 8443 to Controller"
+    from_port   = 8443
+    to_port     = 8443
+    protocol    = "tcp"
+    cidr_blocks = [var.avi_cidr_block]
+  }
+  egress {
+    description = "Allow NTP to Controller"
+    from_port   = 123
+    to_port     = 123
+    protocol    = "udp"
+    cidr_blocks = [var.avi_cidr_block]
   }
   tags = {
     Name = "${var.name_prefix}-avi-se-mgmt-sg"
