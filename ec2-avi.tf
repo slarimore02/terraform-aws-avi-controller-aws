@@ -30,6 +30,12 @@ locals {
   }
   az_names = data.aws_availability_zones.azs.names
   avi_ami = {
+    "20.1.4" = {
+      "us-east-1" = "ami-0822ac66b62a893cc"
+      "us-east-2" = "ami-08cf08a0ba5dcff76"
+      "us-west-1" = "ami-0fa6c926c2fb340d3"
+      "us-west-2" = "ami-08ecc90c68f430fc2"
+    }
     "20.1.3" = {
       "us-east-1" = "ami-0ca5d1b0c6e2ef1f8"
       "us-east-2" = "ami-0786e4ed20b179355"
