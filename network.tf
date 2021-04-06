@@ -21,3 +21,18 @@ resource "aws_subnet" "avi" {
     ignore_changes = [tags]
   }
 }
+
+resource "aws_internet_gateway" "avi" {
+  count                   = var.create_networking ? 1 : 0
+  vpc_id                  = aws_vpc.avi[0].id
+  tags = {
+    Name = "${var.name_prefix}-avi-igw"
+  }
+}
+
+resource "aws_route" "default_route" {
+  count                   = var.create_networking ? 1 : 0
+  route_table_id          = aws_vpc.avi[0].main_route_table_id
+  destination_cidr_block  = "0.0.0.0/0"
+  gateway_id              = aws_internet_gateway.avi[0].id
+}

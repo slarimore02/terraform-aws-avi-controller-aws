@@ -69,6 +69,27 @@ resource "aws_security_group" "avi_se_mgmt_sg" {
     protocol    = "icmp"
     cidr_blocks = [var.avi_cidr_block]
   }
+  ingress {
+    description = "ETHERIP to SE"
+    from_port   = -1
+    to_port     = -1
+    protocol    = "97"
+    cidr_blocks = [var.avi_cidr_block]
+  }
+  ingress {
+    description = "CPHB to SE"
+    from_port   = -1
+    to_port     = -1
+    protocol    = "73"
+    cidr_blocks = [var.avi_cidr_block]
+  }
+  ingress {
+    description = "Proto63 to SE"
+    from_port   = -1
+    to_port     = -1
+    protocol    = "63"
+    cidr_blocks = [var.avi_cidr_block]
+  }
   egress {
     description = "Allow SSH to Controller"
     from_port   = 22
@@ -106,12 +127,26 @@ resource "aws_security_group" "avi_data_sg" {
     protocol    = "-1"
     cidr_blocks = [var.avi_cidr_block]
   }
+  ingress{
+    description = "HTTPS Inbound"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress{
+    description = "HTTP Inbound"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   egress {
-    description = "Allow Traffic to VPC"
+    description = "Allow Traffic Outbound"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = [var.avi_cidr_block]
+    cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
     Name = "${var.name_prefix}-avi-data-sg"
