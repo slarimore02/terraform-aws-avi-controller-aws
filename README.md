@@ -3,16 +3,20 @@ This Terraform module creates and configures an AVI (NSX Advanced Load-Balancer)
 
 ## Module Functions
 The module is meant to be modular and can create all or none of the prerequiste resources needed for the AVI AWS Deployment including:
-* VPC and Subnets for the Controller and SEs (optional with create_networking variable)
-* IAM Roles, Policy, and Instance Profile (optional with create_iam variable)
+* VPC and Subnets for the Controller and SEs (configured with create_networking variable)
+* IAM Roles, Policy, and Instance Profile (configured with create_iam variable)
 * Security Groups for AVI Controller and SE communication
 * AWS EC2 Instance using an official AVI AMI
-* High Availability AVI Controller Deployment (optional with controller_ha variable)
+* High Availability AVI Controller Deployment (configured with controller_ha variable)
 
 During the creation of the Controller instance the following initialization steps are performed:
 * Copy Ansible playbook to controller using the assigned public IP
-* Run Ansible playbook to configure initial settings and AWS Full Access Cloud 
+* Run Ansible playbook to configure initial settings and AWS Full Access Cloud
 
+The Ansible playbook can optionally add these configurations:
+* Create Avi DNS Profile (configured with configure_dns_profile and dns_service_domain variables)
+* Create Avi DNS Virtual Service (configured with configure_dns_vs and dns_vs_settings variables)
+* Configure GSLB (configured with configure_gslb, gslb_site_name, gslb_domains, and configure_gslb_additional_sites variables)
 
 ## Usage
 This is an example of a controller deployment that leverages an existing VPC (with a cidr_block of 10.154.0.0/16) and 3 subnets. The public key is already created in EC2 and the private key found in the "/home/<user>/.ssh/id_rsa" will be used to copy and run the Ansible playbook to configure the Controller.
@@ -30,7 +34,7 @@ module "avi-controller-aws" {
   aws_secret_key = "<secret-key>"
   create_networking = "false"
   create_iam = "false"
-  controller_version = "20.1.3"
+  avi_version = "20.1.5"
   custom_vpc_id = "vpc-<id>"
   custom_subnet_ids = ["subnet-<id>","subnet-<id>","subnet-<id>"]
   avi_cidr_block = "10.154.0.0/16"
@@ -42,9 +46,6 @@ module "avi-controller-aws" {
 }
 output "controller_ip" { 
   value = module.avi_controller_aws.public_address
-}
-output "ansible_variables" {
-  value = module.avi_controller_aws.ansible_variables
 }
 ```
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
