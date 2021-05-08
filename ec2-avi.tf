@@ -1,21 +1,35 @@
 locals {
   # AKO Settings
   cloud_settings = {
-    se_mgmt_subnets     = var.create_networking ? local.mgmt_subnets : local.custom_mgmt_subnets
-    vpc_id              = var.create_networking ? aws_vpc.avi[0].id : var.custom_vpc_id
-    aws_region          = var.region
-    controller_version  = var.controller_version,
-    se_name_prefix      = var.name_prefix
-    mgmt_security_group = aws_security_group.avi_se_mgmt_sg.id
-    data_security_group = aws_security_group.avi_data_sg.id
-    controller_ha       = var.controller_ha
-    controller_name_1   = var.controller_ha ? aws_instance.avi_controller[0].tags["Name"] : null
-    controller_ip_1     = var.controller_ha ? aws_instance.avi_controller[0].private_ip : null
-    controller_name_2   = var.controller_ha ? aws_instance.avi_controller[1].tags["Name"] : null
-    controller_ip_2     = var.controller_ha ? aws_instance.avi_controller[1].private_ip : null
-    controller_name_3   = var.controller_ha ? aws_instance.avi_controller[2].tags["Name"] : null
-    controller_ip_3     = var.controller_ha ? aws_instance.avi_controller[2].private_ip : null
+    se_mgmt_subnets                 = var.create_networking ? local.mgmt_subnets : local.custom_mgmt_subnets
+    vpc_id                          = var.create_networking ? aws_vpc.avi[0].id : var.custom_vpc_id
+    aws_region                      = var.region
+    avi_version                     = var.avi_version
+    dns_servers                     = var.dns_servers
+    dns_search_domain               = var.dns_search_domain
+    ntp_servers                     = var.ntp_servers
+    email_config                    = var.email_config
+    se_name_prefix                  = var.name_prefix
+    mgmt_security_group             = aws_security_group.avi_se_mgmt_sg.id
+    data_security_group             = aws_security_group.avi_data_sg.id
+    controller_ha                   = var.controller_ha
+    controller_ip                   = local.controller_ip
+    controller_names                = local.controller_names
+    configure_dns_route_53          = var.configure_dns_route_53
+    configure_dns_profile           = var.configure_dns_profile
+    dns_service_domain              = var.dns_service_domain
+    configure_dns_vs                = var.configure_dns_vs
+    dns_vs_settings                 = var.dns_vs_settings
+    configure_gslb                  = var.configure_gslb
+    configure_gslb_additional_sites = var.configure_gslb_additional_sites
+    gslb_site_name                  = var.gslb_site_name
+    gslb_domains                    = var.gslb_domains
+    additional_gslb_sites           = var.additional_gslb_sites
+    se_ha_mode                      = var.se_ha_mode
   }
+  controller_names = aws_instance.avi_controller[*].tags.Name
+  controller_ip    = aws_instance.avi_controller[*].private_ip
+
   mgmt_subnets = { for subnet in aws_subnet.avi : subnet.availability_zone =>
     {
       "mgmt_network_uuid" = subnet.id
@@ -30,6 +44,12 @@ locals {
   }
   az_names = data.aws_availability_zones.azs.names
   avi_ami = {
+    "20.1.5" = {
+      "us-east-1" = "ami-0c005433aaab63ab8"
+      "us-east-2" = "ami-0426b8de85eb12a6a"
+      "us-west-1" = "ami-0d4e88b10724f412f"
+      "us-west-2" = "ami-0c6aceb66c9e18cd6"
+    }
     "20.1.4" = {
       "us-east-1" = "ami-0822ac66b62a893cc"
       "us-east-2" = "ami-08cf08a0ba5dcff76"
@@ -58,9 +78,9 @@ locals {
 }
 resource "aws_instance" "avi_controller" {
   count = var.controller_ha ? 3 : 1
-  ami   = local.avi_ami[var.controller_version][var.region]
+  ami   = local.avi_ami[var.avi_version][var.region]
   root_block_device {
-    volume_size           = var.root_disk_size
+    volume_size           = var.boot_disk_size
     delete_on_termination = true
   }
   instance_type = var.instance_type
