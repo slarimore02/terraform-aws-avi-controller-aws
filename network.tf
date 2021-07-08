@@ -13,7 +13,7 @@ resource "aws_subnet" "avi" {
   vpc_id                  = aws_vpc.avi[0].id
   cidr_block              = cidrsubnet(aws_vpc.avi[0].cidr_block, 8, 230 + each.key)
   availability_zone       = local.az_names[each.key]
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = var.controller_public_address ? true : false
   tags = {
     Name = "${var.name_prefix}-avi-subnet-${local.az_names[each.key]}"
   }
