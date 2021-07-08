@@ -44,6 +44,12 @@ locals {
   }
   az_names = data.aws_availability_zones.azs.names
   avi_ami = {
+    "20.1.6" = {
+      "us-east-1" = "ami-0645a1b3f7a3b0935"
+      "us-east-2" = "ami-09605d05d713e13f0"
+      "us-west-1" = "ami-0bd87553e8167e589"
+      "us-west-2" = "ami-0451e26f70764fc9e"
+    }
     "20.1.5" = {
       "us-east-1" = "ami-0c005433aaab63ab8"
       "us-east-2" = "ami-0426b8de85eb12a6a"
@@ -122,12 +128,16 @@ resource "null_resource" "ansible_provisioner" {
 
   connection {
     type        = "ssh"
-    host        = aws_instance.avi_controller[0].public_ip
+    host        = var.controller_public_address ? aws_instance.avi_controller[0].public_ip : aws_instance.avi_controller[0].private_ip
     user        = "admin"
     timeout     = "600s"
     private_key = file(var.private_key_path)
   }
-
+  provisioner "file" {
+    content = templatefile("${path.module}/files/avi-cleanup.yml.tpl",
+    local.cloud_settings)
+    destination = "/home/admin/avi-cleanup.yml"
+  }
   provisioner "file" {
     content = templatefile("${path.module}/files/avi-controller-aws-all-in-one-play.yml.tpl",
     local.cloud_settings)

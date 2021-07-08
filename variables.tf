@@ -39,6 +39,11 @@ variable "create_networking" {
   type        = bool
   default     = "true"
 }
+variable "controller_public_address" {
+  description = "This variable controls if the Controller has a Public IP Address. When set to false the Ansible provisioner will connect to the private IP of the Controller."
+  type        = bool
+  default     = "false"
+}
 variable "avi_cidr_block" {
   description = "The CIDR that will be used for creating a subnet in the AVI VPC - a /16 should be provided "
   type        = string
@@ -164,6 +169,6 @@ variable "configure_gslb_additional_sites" {
 }
 variable "additional_gslb_sites" {
   description = "The Names and IP addresses of the GSLB Sites that will be configured."
-  type        = list(object({ name = string, ip_address = string, dns_vs_name = string }))
-  default     = [{ name = "", ip_address = "", dns_vs_name = "" }]
+  type        = list(object({ name = string, ip_address_list = list(string), dns_vs_name = string }))
+  default     = [{ name = "", ip_address_list = [""], dns_vs_name = "DNS-VS" }]
 }
