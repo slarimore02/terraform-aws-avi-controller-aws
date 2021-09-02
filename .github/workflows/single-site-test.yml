@@ -88,7 +88,8 @@ jobs:
           pipx inject ansible-core avisdk requests --include-deps --include-apps
           pipx list
           ansible-galaxy collection install vmware.alb
-          echo $PKEY > /home/runner/pkey
+          echo "$PKEY" > pkey_enc
+          cat pkey_enc | base64 -d > /home/runner/pkey
           chmod 600 /home/runner/pkey
         env:
           PKEY: ${{ secrets.PKEY }}
