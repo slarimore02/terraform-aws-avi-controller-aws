@@ -89,7 +89,7 @@ jobs:
           pipx list
           ansible-galaxy collection install vmware.alb
           echo $PKEY > /home/runner/pkey
-          cat /home/runner/pkey
+          ssh-keygen -p -f /home/runner/pkey -m pem
         env:
           PKEY: ${{ secrets.PKEY }}
       
