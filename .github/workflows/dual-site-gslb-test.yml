@@ -39,6 +39,9 @@ jobs:
       TF_VAR_controller_ha: ${{ matrix.controller_ha }}
       TF_VAR_controller_password: ${{ secrets.TF_VAR_CONTROLLER_PASSWORD }}
       TF_VAR_controller_public_address: ${{ matrix.controller_public_address }}
+      TF_VAR_private_key_path: "/home/runner/pkey"
+      TF_VAR_key_pair_name: ${{ secrets.TF_VAR_KEY_PAIR_NAME }}
+      TF_VAR_avi_version: ${{ matrix.avi_version }}
       avi_version: ${{ matrix.avi_version }}
     defaults:
       run:
@@ -86,6 +89,9 @@ jobs:
           pipx inject ansible-core avisdk requests --include-deps --include-apps
           pipx list
           ansible-galaxy collection install vmware.alb
+          echo $PKEY > /home/runner/pkey
+        env:
+          PKEY: ${{ secrets.PKEY }}
       
       - name: Create Infrastructure and run Go Tests
         run: go test -v create_infra_test.go -tags=e2e -timeout 120m

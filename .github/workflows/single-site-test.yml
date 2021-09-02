@@ -31,7 +31,7 @@ jobs:
       TF_VAR_controller_password: ${{ secrets.TF_VAR_CONTROLLER_PASSWORD }}
       TF_VAR_custom_vpc_id: ${{ secrets.TF_VAR_CUSTOM_VPC_ID_WEST }}
       TF_VAR_custom_subnet_ids: ${{ secrets.TF_VAR_CUSTOM_SUBNET_IDS_WEST }}
-      TF_VAR_avi_cidr_block_west: "10.254.0.0/16"
+      TF_VAR_avi_cidr_block: "10.254.0.0/16"
       TF_VAR_dns_vs_settings: ${{ secrets.TF_VAR_DNS_VS_SETTINGS_WEST }}
       TF_VAR_controller_ha: ${{ matrix.controller_ha }}
       TF_VAR_controller_public_address: ${{ matrix.controller_public_address }}
