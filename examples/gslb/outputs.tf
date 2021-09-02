@@ -1,6 +1,6 @@
-output "east1_controller_info" {
+output "east2_controller_info" {
   description = "IP address for the East region controller"
-  value       = module.avi_controller_aws_east1.controllers
+  value       = module.avi_controller_aws_east2.controllers
 }
 output "westus2_controller_info" {
   description = "IP address for the West region controller"

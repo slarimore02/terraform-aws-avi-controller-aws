@@ -22,18 +22,25 @@ jobs:
     runs-on: ubuntu-latest
     env:
       site_type: "single-site"
-      aws_secret_key: ${{ secrets.TF_VAR_AWS_SECRET_KEY }}
-      aws_access_key: ${{ secrets.TF_VAR_AWS_ACCESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.TF_VAR_AWS_SECRET_KEY }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.TF_VAR_AWS_ACCESS_KEY }}
       TF_VAR_aws_secret_key: ${{ secrets.TF_VAR_AWS_SECRET_KEY }}
       TF_VAR_aws_access_key: ${{ secrets.TF_VAR_AWS_ACCESS_KEY }}
       TF_VAR_create_iam: ${{ matrix.create_iam }}
       TF_VAR_create_networking: ${{ matrix.create_networking }}
-      TF_VAR_controller_ha: ${{ matrix.controller_ha }}
       TF_VAR_controller_password: ${{ secrets.TF_VAR_CONTROLLER_PASSWORD }}
+      TF_VAR_custom_vpc_id: ${{ secrets.TF_VAR_CUSTOM_VPC_ID_WEST }}
+      TF_VAR_custom_subnet_ids: ${{ secrets.TF_VAR_CUSTOM_SUBNET_IDS_WEST }}
+      TF_VAR_avi_cidr_block_west: "10.254.0.0/16"
+      TF_VAR_dns_vs_settings: ${{ secrets.TF_VAR_DNS_VS_SETTINGS_WEST }}
+      TF_VAR_controller_ha: ${{ matrix.controller_ha }}
       TF_VAR_controller_public_address: ${{ matrix.controller_public_address }}
       TF_VAR_configure_dns_profile: "true"
       TF_VAR_dns_service_domain: "aviterraform.local"
       TF_VAR_configure_dns_vs: "true"
+      TF_VAR_private_key_path: "/home/runner/pkey"
+      TF_VAR_key_pair_name: ${{ secrets.TF_VAR_KEY_PAIR_NAME }}
+      TF_VAR_avi_version: ${{ matrix.avi_version }}
       avi_version: ${{ matrix.avi_version }}
     defaults:
       run:
@@ -81,6 +88,9 @@ jobs:
           pipx inject ansible-core avisdk requests --include-deps --include-apps
           pipx list
           ansible-galaxy collection install vmware.alb
+          echo $PKEY > /home/runner/pkey
+        env:
+          PKEY: ${{ secrets.PKEY }}
       
       - name: Create Infrastructure and run Go Tests
         run: go test -v create_infra_test.go -tags=e2e -timeout 120m

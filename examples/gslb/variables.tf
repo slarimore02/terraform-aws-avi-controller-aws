@@ -63,14 +63,17 @@ variable "aws_access_key" {
 variable "avi_cidr_block_west" {
   description = "The CIDR that will be used for creating a subnet in the AVI VPC - a /16 should be provided "
   type        = string
-  default     = "10.255.1.0/16"
 }
 variable "avi_cidr_block_east" {
   description = "The CIDR that will be used for creating a subnet in the AVI VPC - a /16 should be provided "
   type        = string
-  default     = "10.255.1.0/16"
 }
-variable "custom_vpc_id" {
+variable "custom_vpc_id_east" {
+  description = "This field can be used to specify an existing VPC for the controller and SEs. The create-networking variable must also be set to false for this network to be used."
+  type        = string
+  default     = null
+}
+variable "custom_vpc_id_west" {
   description = "This field can be used to specify an existing VPC for the controller and SEs. The create-networking variable must also be set to false for this network to be used."
   type        = string
   default     = null

@@ -86,3 +86,8 @@ variable "custom_subnet_ids" {
   type        = list(string)
   default     = null
 }
+variable "dns_vs_settings" {
+  description = "Settings for the DNS Virtual Service. The subnet_name must be an existing AWS Subnet. If the allocate_public_ip option is set to true a EIP will be allocated for the VS. The VS IP address will automatically be allocated via the AWS IPAM. Example:{ subnet_name = \"subnet-dns\", allocate_public_ip = \"true\" }"
+  type        = object({ subnet_name = string, allocate_public_ip = bool })
+  default     = null
+}
