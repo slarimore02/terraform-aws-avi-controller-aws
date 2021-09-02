@@ -92,7 +92,6 @@ jobs:
           echo "$PKEY" > pkey_enc
           cat pkey_enc | base64 -d > /home/runner/pkey
           chmod 600 /home/runner/pkey
-          cat /home/runner/pkey
         env:
           PKEY: ${{ secrets.PKEY }}
       
