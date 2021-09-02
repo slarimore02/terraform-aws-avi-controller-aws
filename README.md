@@ -25,7 +25,7 @@ terraform {
   backend "local" {
   }
 }
-module "avi-controller-aws" {
+module "avi_controller_aws" {
   source  = "slarimore02/avi-controller-aws/aws"
   version = "1.0.x"
 
@@ -45,7 +45,7 @@ module "avi-controller-aws" {
   custom_tags = { "Role" : "Avi-Controller", "Owner" : "admin", "Department" : "IT", "shutdown_policy" : "noshut" }
 }
 output "controller_info" {
-  value = module.avi-controller-aws.controllers
+  value = module.avi_controller_aws.controllers
 }
 ```
 ## GSLB Deployment Example
@@ -55,11 +55,11 @@ terraform {
   backend "local" {
   }
 }
-module "avi_controller_aws_west1" {
+module "avi_controller_aws_west2" {
   source                = "slarimore02/avi-controller-aws/aws"
   version               = "1.0.x"
 
-  region                = "us-west-1"
+  region                = "us-west-2"
   aws_access_key        = "<access-key>"
   aws_secret_key        = "<secret-key>"
   create_networking     = "false"
@@ -84,20 +84,21 @@ module "avi_controller_aws_east1" {
   source  = "slarimore02/avi-controller-aws/aws"
   version = "1.0.x"
 
-  region = "us-east-1"
-  aws_access_key = "<access-key>"
-  aws_secret_key = "<secret-key>"
-  create_networking = "false"
-  create_iam = "false"
-  avi_version = "20.1.6"
-  custom_vpc_id = "vpc-<id>"
-  custom_subnet_ids = ["subnet-<id>","subnet-<id>","subnet-<id>"]
-  avi_cidr_block = "10.155.0.0/16"
-  controller_password = "<newpassword>"
-  key_pair_name = "<key>"
-  private_key_path = "/home/<user>/.ssh/id_rsa"
-  name_prefix = "<name>"
-  custom_tags = { "Role" : "Avi-Controller", "Owner" : "admin", "Department" : "IT", "shutdown_policy" : "noshut" }
+  region                          = "us-east-1"
+  aws_access_key                  = "<access-key>"
+  aws_secret_key                  = "<secret-key>"
+  create_networking               = "false"
+  create_iam                      = "false"
+  controller_ha                   = true
+  avi_version                     = "20.1.6"
+  custom_vpc_id                   = "vpc-<id>"
+  custom_subnet_ids               = ["subnet-<id>","subnet-<id>","subnet-<id>"]
+  avi_cidr_block                  = "10.155.0.0/16"
+  controller_password             = "<newpassword>"
+  key_pair_name                   = "<key>"
+  private_key_path                = "/home/<user>/.ssh/id_rsa"
+  name_prefix                     = "<name>"
+  custom_tags                     = { "Role" : "Avi-Controller", "Owner" : "admin", "Department" : "IT", "shutdown_policy" : "noshut" }
   se_ha_mode                      = "active/active"
   configure_dns_profile           = "true"
   dns_service_domain              = "east1.avidemo.net"
@@ -107,13 +108,13 @@ module "avi_controller_aws_east1" {
   gslb_site_name                  = "East1"
   gslb_domains                    = ["gslb.avidemo.net"]
   configure_gslb_additional_sites = "true"
-  additional_gslb_sites           = [{name = "West2", ip_address_list = module.avi_controller_aws_west1.controllers[*].private_ip_address, dns_vs_name = "DNS-VS"}]
+  additional_gslb_sites           = [{name = "West2", ip_address_list = module.avi_controller_aws_west2.controllers[*].private_ip_address, dns_vs_name = "DNS-VS"}]
 }
 output "east1_controller_info" {
   value = module.avi_controller_aws_east1.controllers
 }
 output "westus2_controller_info" {
-  value = module.avi_controller_aws_west1.controllers
+  value = module.avi_controller_aws_west2.controllers
 }
 ```
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
