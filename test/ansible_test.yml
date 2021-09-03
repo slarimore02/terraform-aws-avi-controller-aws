@@ -131,6 +131,10 @@
       ansible.builtin.debug:
         var: dns_ipam_profiles
         verbosity: 1
+
+    - name: Pause for DNS VS to create
+      pause:
+        minutes: 2
     
     - name: Wait for DNS VS to be ready
       avi_api_session:

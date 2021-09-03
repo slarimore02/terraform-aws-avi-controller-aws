@@ -50,22 +50,22 @@ jobs:
       matrix:
         include:
           - avi_version: "20.1.6"
-            create_networking: true
+            create_networking: false
             controller_ha: false
             controller_public_address: true
             create_iam: false
           - avi_version: "20.1.6"
-            create_networking: true
+            create_networking: false
             controller_ha: true
             controller_public_address: true
             create_iam: false
           - avi_version: "21.1.1"
-            create_networking: true
+            create_networking: false
             controller_ha: false
             controller_public_address: true
             create_iam: false
           - avi_version: "21.1.1"
-            create_networking: true
+            create_networking: false
             controller_ha: true
             controller_public_address: true
             create_iam: false

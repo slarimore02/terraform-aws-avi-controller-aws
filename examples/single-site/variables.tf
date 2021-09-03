@@ -27,7 +27,7 @@ variable "name_prefix" {
 variable "create_networking" {
   description = "This variable controls the VPC and subnet creation for the Avi Controller. When set to false the custom_vpc_name and custom_subnetwork_name must be set."
   type        = bool
-  default     = true
+  default     = false
 }
 variable "create_iam" {
   description = "Create IAM Roles and Role Bindings necessary for the Avi GCP Full Access Cloud. If not set the Roles and permissions in this document must be associated with the controller service account - https://Avinetworks.com/docs/latest/gcp-full-access-roles-and-permissions/"
