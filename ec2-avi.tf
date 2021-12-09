@@ -43,54 +43,11 @@ locals {
     }
   }
   az_names = data.aws_availability_zones.azs.names
-  avi_ami = {
-    "21.1.1" = {
-      "us-east-1" = "ami-010074db16c05a098"
-      "us-east-2" = "ami-063514c0bcbe293f9"
-      "us-west-1" = "ami-03baad459ee4a3980"
-      "us-west-2" = "ami-007edf6b2b302cce5"
-    }
-    "20.1.6" = {
-      "us-east-1" = "ami-0645a1b3f7a3b0935"
-      "us-east-2" = "ami-09605d05d713e13f0"
-      "us-west-1" = "ami-0bd87553e8167e589"
-      "us-west-2" = "ami-0451e26f70764fc9e"
-    }
-    "20.1.5" = {
-      "us-east-1" = "ami-0c005433aaab63ab8"
-      "us-east-2" = "ami-0426b8de85eb12a6a"
-      "us-west-1" = "ami-0d4e88b10724f412f"
-      "us-west-2" = "ami-0c6aceb66c9e18cd6"
-    }
-    "20.1.4" = {
-      "us-east-1" = "ami-0822ac66b62a893cc"
-      "us-east-2" = "ami-08cf08a0ba5dcff76"
-      "us-west-1" = "ami-0fa6c926c2fb340d3"
-      "us-west-2" = "ami-08ecc90c68f430fc2"
-    }
-    "20.1.3" = {
-      "us-east-1" = "ami-0ca5d1b0c6e2ef1f8"
-      "us-east-2" = "ami-0786e4ed20b179355"
-      "us-west-1" = "ami-064facee296f10111"
-      "us-west-2" = "ami-0f1ba8c00dfd6c04c"
-    }
-    "20.1.2" = {
-      "us-east-1" = "ami-090699c2c811f2960"
-      "us-east-2" = "ami-0a2adfbfbd4c6da8e"
-      "us-west-1" = "ami-0d440bb0a05717a19"
-      "us-west-2" = "ami-08a85624884915308"
-    }
-    "18.2.11" = {
-      "us-east-1" = "ami-071db10cf4818c77a"
-      "us-east-2" = "ami-0858e11a36f912dcd"
-      "us-west-1" = "ami-071db10cf4818c77a"
-      "us-west-2" = "ami-07963584f136c2e33"
-    }
-  }
 }
+
 resource "aws_instance" "avi_controller" {
   count = var.controller_ha ? 3 : 1
-  ami   = local.avi_ami[var.avi_version][var.region]
+  ami   = data.aws_ami.avi.id
   root_block_device {
     volume_size           = var.boot_disk_size
     delete_on_termination = true
