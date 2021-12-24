@@ -1,3 +1,6 @@
+# Copyright 2021 VMware, Inc.
+# SPDX-License-Identifier: Apache-2.0
+
 variable "avi_version" {
   description = "The AVI Controller version that will be deployed"
   type        = string

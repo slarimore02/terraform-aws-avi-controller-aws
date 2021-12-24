@@ -1,3 +1,6 @@
+# Copyright 2021 VMware, Inc.
+# SPDX-License-Identifier: Apache-2.0
+
 resource "aws_iam_role" "avi" {
   count              = var.create_iam ? 1 : 0
   name               = "${var.name_prefix}_AviController-Refined-Role"

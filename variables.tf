@@ -1,3 +1,6 @@
+# Copyright 2021 VMware, Inc.
+# SPDX-License-Identifier: Apache-2.0
+
 variable "region" {
   description = "The Region that the AVI controller and SEs will be deployed to"
   type        = string

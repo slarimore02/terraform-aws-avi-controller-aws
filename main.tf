@@ -1,3 +1,6 @@
+# Copyright 2021 VMware, Inc.
+# SPDX-License-Identifier: Apache-2.0
+
 terraform {
   required_version = ">= 0.13.6"
   required_providers {

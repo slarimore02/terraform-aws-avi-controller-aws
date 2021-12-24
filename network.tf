@@ -1,3 +1,6 @@
+# Copyright 2021 VMware, Inc.
+# SPDX-License-Identifier: Apache-2.0
+
 # Create VPC and Subnets for AVI Controller and SEs
 resource "aws_vpc" "avi" {
   count      = var.create_networking ? 1 : 0

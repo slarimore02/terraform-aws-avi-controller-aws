@@ -1,3 +1,6 @@
+# Copyright 2021 VMware, Inc.
+# SPDX-License-Identifier: Apache-2.0
+
 resource "aws_security_group" "avi_controller_sg" {
   name        = "${var.name_prefix}-avi-controller-sg"
   description = "Allow Traffic for AVI Controller"
