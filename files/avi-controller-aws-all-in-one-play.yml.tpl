@@ -90,7 +90,7 @@
           redirect_to_https: true
           use_uuid_from_input: false
         welcome_workflow_complete: true
-
+%{ if configure_cloud ~}
     - name: Configure Cloud
       avi_cloud:
         avi_credentials: "{{ avi_credentials }}"
@@ -407,7 +407,7 @@
 
     - name: GSLB Config | Verify DNS configuration
       avi_api_session:
-        controller: "${site.ip_address}"
+        controller: "${site.ip_address_list[0]}"
         username: "admin"
         password: "{{ password }}"
         api_version: ${avi_version}
@@ -459,7 +459,7 @@
 %{ endfor ~}
                 dns_vses:
                   - dns_vs_uuid: "{{ dns_vs_verify.obj.results.0.uuid }}"
-  %{ endfor }%{ endif }
+  %{ endfor }%{ endif }%{ endif ~}
 %{ if controller_ha }
     - name: Controller Cluster Configuration
       avi_cluster:
