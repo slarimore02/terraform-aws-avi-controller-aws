@@ -56,9 +56,8 @@ resource "aws_instance" "avi_controller" {
     volume_size           = var.boot_disk_size
     delete_on_termination = true
   }
-  instance_type = var.instance_type
-  key_name      = var.key_pair_name
-  #availability_zone = var.create_networking ? aws_subnet.avi[count.index].availability_zone : 
+  instance_type          = var.instance_type
+  key_name               = var.key_pair_name
   subnet_id              = var.create_networking ? aws_subnet.avi[count.index].id : var.custom_subnet_ids[count.index]
   vpc_security_group_ids = [aws_security_group.avi_controller_sg.id]
   iam_instance_profile   = var.create_iam ? aws_iam_instance_profile.avi[0].id : null
@@ -67,6 +66,19 @@ resource "aws_instance" "avi_controller" {
   }
   lifecycle {
     ignore_changes = [tags]
+  }
+  connection {
+    type        = "ssh"
+    host        = var.controller_public_address ? self.public_ip : self.private_ip
+    user        = "admin"
+    timeout     = "600s"
+    private_key = file(var.private_key_path)
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "sleep 180",
+      "sudo /opt/avi/scripts/initialize_admin_user.py --password ${var.controller_password}",
+    ]
   }
 }
 resource "aws_ec2_tag" "custom_controller_1" {
@@ -112,8 +124,7 @@ resource "null_resource" "ansible_provisioner" {
   }
   provisioner "remote-exec" {
     inline = [
-      "sleep 180",
-      "sudo /opt/avi/scripts/initialize_admin_user.py --password ${var.controller_password}",
+      "sleep 30",
       "ansible-playbook avi-controller-aws-all-in-one-play.yml -e password=${var.controller_password} -e aws_access_key_id=${var.aws_access_key} -e aws_secret_access_key=${var.aws_secret_key} > ansible-playbook.log 2> ansible-error.log",
       "echo Controller Configuration Completed"
     ]

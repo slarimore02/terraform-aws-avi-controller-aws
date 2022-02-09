@@ -14,7 +14,6 @@ data "aws_ami" "avi" {
 
   filter {
     name   = "name"
-    values = ["Avi-Controller-${var.avi_version}-*"]
+    values = ["Avi*Controller-${var.avi_version}-*"]
   }
 }
-
