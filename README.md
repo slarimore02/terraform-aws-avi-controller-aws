@@ -122,16 +122,16 @@ output "westus2_controller_info" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.6 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 3.25.0 |
-| <a name="requirement_null"></a> [null](#requirement\_null) | 3.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 3.74.2 |
+| <a name="requirement_null"></a> [null](#requirement\_null) | 3.1.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 3.25.0 |
-| <a name="provider_null"></a> [null](#provider\_null) | 3.0.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 3.74.2 |
+| <a name="provider_null"></a> [null](#provider\_null) | 3.1.0 |
 
 ## Modules
 
@@ -162,7 +162,7 @@ No modules.
 | [aws_security_group.avi_se_mgmt_sg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_subnet.avi](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
 | [aws_vpc.avi](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
-| [null_resource.ansible_provisioner](https://registry.terraform.io/providers/hashicorp/null/3.0.0/docs/resources/resource) | resource |
+| [null_resource.ansible_provisioner](https://registry.terraform.io/providers/hashicorp/null/3.1.0/docs/resources/resource) | resource |
 | [aws_ami.avi](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 | [aws_availability_zones.azs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 | [aws_subnet.custom](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
@@ -211,6 +211,6 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_controller_private_addresses"></a> [controller\_private\_addresses](#output\_controller\_private\_addresses) | The Private IP Addresses allocated for the Avi Controller(s) |
+| <a name="output_controller_public_addresses"></a> [controller\_public\_addresses](#output\_controller\_public\_addresses) | Public IP Addresses for the AVI Controller(s) |
 | <a name="output_controllers"></a> [controllers](#output\_controllers) | The AVI Controller(s) Information |
-| <a name="output_public_address"></a> [public\_address](#output\_public\_address) | Public IP Addresses for the AVI Controller(s) |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

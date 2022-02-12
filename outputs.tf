@@ -1,10 +1,6 @@
 # Copyright 2021 VMware, Inc.
 # SPDX-License-Identifier: Apache-2.0
 
-output "public_address" {
-  description = "Public IP Addresses for the AVI Controller(s)"
-  value       = [for s in aws_instance.avi_controller : s.public_ip]
-}
 output "controllers" {
   description = "The AVI Controller(s) Information"
   value = ([for s in aws_instance.avi_controller : merge(
@@ -18,4 +14,8 @@ output "controllers" {
 output "controller_private_addresses" {
   description = "The Private IP Addresses allocated for the Avi Controller(s)"
   value       = aws_instance.avi_controller[*].private_ip
+}
+output "controller_public_addresses" {
+  description = "Public IP Addresses for the AVI Controller(s)"
+  value       = aws_instance.avi_controller[*].public_ip
 }
