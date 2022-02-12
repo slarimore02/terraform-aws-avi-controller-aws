@@ -232,13 +232,13 @@
           cloud_ref: "{{ avi_cloud.obj.url }}"
           ha_mode: HA_MODE_SHARED
           algo: PLACEMENT_ALGO_PACKED
-          buffer_se: "1"
+          buffer_se: "0"
           max_se: "4"
-          max_vs_per_se: "2"
+          max_vs_per_se: "1"
           extra_shared_config_memory: 2000
           se_name_prefix: "{{ se_name_prefix }}"
           realtime_se_metrics:
-            duration: "10080"
+            duration: "60"
             enabled: true
       register: gslb_se_group
 %{ endif}
