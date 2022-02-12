@@ -117,6 +117,25 @@ output "westus2_controller_info" {
   value = module.avi_controller_aws_west2.controllers
 }
 ```
+## Day 1 Ansible Configuration and Avi Resource Cleanup
+The module copies and runs an Ansible play for configuring the initial day 1 Avi config. The plays listed below can be reviewed by connecting to the Avi Controller by SSH. In an HA setup the first controller will have these files. 
+
+### avi-controller-aws-all-in-one-play.yml
+This play will configure the Avi Cloud, Network, IPAM/DNS profiles, DNS Virtual Service, GSLB depending on the variables used by the module. The initial run of this play will be output into the ansible-playbook.log file which can be reviewed to determine what tasks were ran. 
+
+Example run (appropriate variables should be used):
+```bash
+~$ ansible-playbook avi-controller-aws-all-in-one-play.yml -e password=${var.controller_password} -e aws_access_key_id=${var.aws_access_key} -e aws_secret_access_key=${var.aws_secret_key} > ansible-playbook-run.log
+```
+
+### avi-cleanup.yml
+This play will disable all Virtual Services and delete all existing Avi service engines. This playbook should be ran before deleting the controller with terraform destroy to clean up the resources created by the Avi Controller. 
+
+Example run (appropriate variables should be used):
+```bash
+~$ ansible-playbook avi-cleanup.yml -e password=${var.controller_password}
+```
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
