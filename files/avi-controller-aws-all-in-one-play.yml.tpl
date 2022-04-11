@@ -373,6 +373,9 @@
         api_version: ${avi_version}
         http_method: get
         path: virtualservice?name=DNS-VS
+      until: dns_vs_verify.obj.count == 1
+      retries: 30
+      delay: 10
       register: dns_vs_verify
 
     - name: Display DNS VS Verify
