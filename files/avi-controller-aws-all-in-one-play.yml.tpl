@@ -90,6 +90,10 @@
           redirect_to_https: true
           use_uuid_from_input: false
         welcome_workflow_complete: true
+      until: sysconfig is not failed
+      retries: 30
+      delay: 5
+      register: sysconfig
 %{ if configure_cloud ~}
     - name: Configure Cloud
       avi_cloud:
