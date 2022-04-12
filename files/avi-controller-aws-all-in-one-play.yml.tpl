@@ -288,6 +288,9 @@
             fqdn: "dns.{{ dns_service_domain }}"
           name: vsvip-DNS-VS-Default-Cloud
       register: vsvip_results
+      until: vsvip_results is not failed
+      retries: 30
+      delay: 5
 
     - name: Create DNS Virtual Service
       avi_api_session:
@@ -321,6 +324,9 @@
             override_network_profile_ref: /api/networkprofile/?name=System-TCP-Proxy
           vsvip_ref: "{{ vsvip_results.obj.url }}"
       register: dns_vs
+      until: dns_vs is not failed
+      retries: 30
+      delay: 5
 
     - name: Add DNS-VS to System Configuration
       avi_systemconfiguration:
