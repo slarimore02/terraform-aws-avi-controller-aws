@@ -142,14 +142,14 @@ Example run (appropriate variables should be used):
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 3.74.2 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.9.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | 3.1.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 3.74.2 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.9.0 |
 | <a name="provider_null"></a> [null](#provider\_null) | 3.1.0 |
 
 ## Modules
@@ -205,6 +205,7 @@ No modules.
 | <a name="input_controller_ha"></a> [controller\_ha](#input\_controller\_ha) | If true a HA controller cluster is deployed and configured | `bool` | `"false"` | no |
 | <a name="input_controller_password"></a> [controller\_password](#input\_controller\_password) | The password that will be used authenticating with the AVI Controller. This password be a minimum of 8 characters and contain at least one each of uppercase, lowercase, numbers, and special characters | `string` | n/a | yes |
 | <a name="input_controller_public_address"></a> [controller\_public\_address](#input\_controller\_public\_address) | This variable controls if the Controller has a Public IP Address. When set to false the Ansible provisioner will connect to the private IP of the Controller. | `bool` | `"false"` | no |
+| <a name="input_create_gslb_se_group"></a> [create\_gslb\_se\_group](#input\_create\_gslb\_se\_group) | Create a SE group for GSLB. This option only applies when configure\_gslb is set to true | `bool` | `"true"` | no |
 | <a name="input_create_iam"></a> [create\_iam](#input\_create\_iam) | Create IAM Service Account, Roles, and Role Bindings for Avi GCP Full Access Cloud | `bool` | `"false"` | no |
 | <a name="input_create_networking"></a> [create\_networking](#input\_create\_networking) | This variable controls the VPC and subnet creation for the AVI Controller. When set to false the custom-vpc-name and custom-subnetwork-name must be set. | `bool` | `"true"` | no |
 | <a name="input_custom_subnet_ids"></a> [custom\_subnet\_ids](#input\_custom\_subnet\_ids) | This field can be used to specify a list of existing VPC Subnets for the controller and SEs. The create-networking variable must also be set to false for this network to be used. | `list(string)` | `null` | no |
