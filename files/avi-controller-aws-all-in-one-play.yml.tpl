@@ -326,7 +326,7 @@
         tenant: admin
         dns_virtualservice_refs: "{{ dns_vs.obj.url }}"
 %{ endif}
-%{ if configure_gslb }
+%{ if configure_gslb && gslb_site_name != "" }
     - name: GSLB Config | Verify Cluster UUID
       avi_api_session:
         avi_credentials: "{{ avi_credentials }}"
