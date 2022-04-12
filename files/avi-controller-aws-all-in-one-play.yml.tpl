@@ -136,7 +136,7 @@
           cloud_ref: "/api/cloud?name={{ cloud_name }}"
           ha_mode: HA_MODE_SHARED_PAIR
           min_scaleout_per_vs: 2
-          algo: PLACEMENT_ALGO_DISTRIBUTED
+          algo: PLACEMENT_ALGO_PACKED
           buffer_se: "0"
           max_se: "10"
           se_name_prefix: "{{ se_name_prefix }}"
